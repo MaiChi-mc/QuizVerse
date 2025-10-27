@@ -1,13 +1,14 @@
 // src/app/page.tsx
 "use client";
 import { QuizCard } from "@/components/QuizCard";
-import { CategoryCard } from "@/components/CategoryCard";
 import React from "react";
 import BigScallop from "../components/BigScallop";
+import SmallScallop from "@/components/SmallScallop";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { CategoryCarousel } from "@/components/CategoryCarousel";
 import type { Category, Quiz } from "@/types";
 
 export default function Home() {
@@ -20,7 +21,9 @@ export default function Home() {
   useEffect(() => {
     // 1. Gọi API để fetch dữ liệu quizzes
     const fetchQuizzes = async () => {
-      const response = await fetch("http://localhost:3000/quizzes/latest");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/quizzes/latest`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok (quizzes)");
       }
@@ -30,7 +33,9 @@ export default function Home() {
 
     // 2. Gọi API để fetch dữ liệu categories
     const fetchCategories = async () => {
-      const response = await fetch("http://localhost:3000/categories/all");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/categories/all`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok (categories)");
       }
@@ -99,20 +104,20 @@ export default function Home() {
           <BigScallop
             position="bottom"
             colorClass="bg-white"
-            className="z-10 translate-y-32 -translate-x-5"
+            className="z-10 translate-y-40 -translate-x-5"
           />
           <BigScallop
             position="bottom"
             colorClass="bg-soft-pink"
-            className="z-0 translate-y-20 -translate-x-28"
+            className="z-0 translate-y-28 -translate-x-28"
           />
         </div>
       </main>
 
       {/* Section danh sách Category */}
       <section className="w-full bg-white py-10 px-4 lg:px-14 mt-10 mb-0 relative z-30">
-        <div className="flex justify-center items-center gap-0 ">
-          <h2 className="hidden lg:flex text-light-purple text-2xl font-semibold -mt-9">
+        <div className="flex justify-center items-center gap-0 mt-14">
+          <h2 className="hidden lg:flex text-light-purple text-2xl font-semibold -mt-9 pl-14">
             ────── ⋆⋅☆⋅⋆ ──────
           </h2>
           <h2
@@ -124,36 +129,37 @@ export default function Home() {
           >
             Choose your favourite topic!
           </h2>
-          <h2 className="hidden lg:flex text-light-purple text-2xl font-semibold -mt-9">
+          <h2 className="hidden lg:flex text-light-purple text-2xl font-semibold -mt-9 pr-14">
             ────── ⋆⋅☆⋅⋆ ──────
           </h2>
         </div>
-
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-0">
-          {isLoading ? (
-            <p className="text-dark-navy col-span-full text-center">
-              Loading Topic...
-            </p>
-          ) : (
-            // Dùng .map() để lặp qua mảng quizzes trong state
-            categories.map((cat) => (
-              <CategoryCard
-                key={cat.id}
-                name={cat.name}
-                description={cat.description}
-                imageUrl="/Background.png"
-                href={cat.href}
-              />
-            ))
-          )}
-        </div>
+        <CategoryCarousel categories={categories} isLoading={isLoading} />
       </section>
+
+      {/* Thanh trang trí, ngăn cách Categoty và Quiz */}
+      <div className="h-20 bg-brand-white relative bottom-0 left-0 right-0 z-30">
+        <div className="h-9 bg-light-blue"></div>
+        <div className="relative bottom-0 w-full h-32 -top-10">
+          <SmallScallop
+            position="top"
+            colorClass="bg-soft-pink"
+            className="z-10 absolute translate-y-9"
+          />
+        </div>
+      </div>
 
       {/* Section danh sách Quiz */}
       <section className="w-full bg-brand-white py-16 px-4 mb-0 relative z-30">
-        <h2 className="text-center text-4xl font-pacifico text-dark-navy mb-10">
-          Cute Quizzes to Try!
+        <h2
+          className="text-center text-xl font-bold text-dark-navy -mt-10 mb-10 rounded-3xl
+          py-2 bg-light-purple max-w-32 w-full mx-auto"
+          style={{
+            boxShadow: "6px 6px 0 rgba(208, 207, 218)",
+          }}
+        >
+          New!
         </h2>
+
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading ? (
             <p className="text-dark-navy col-span-full text-center">
@@ -166,7 +172,7 @@ export default function Home() {
                 key={quiz.id}
                 title={quiz.title}
                 description={quiz.description}
-                imageUrl="/Background.png"
+                imageUrl={quiz.imageUrl || "/Background.png"}
                 views={quiz.views}
                 tags={quiz.tags}
                 href={quiz.href}

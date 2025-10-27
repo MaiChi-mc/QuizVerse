@@ -19,4 +19,9 @@ export class CategoriesController {
   findLatest() {
     return this.categoriesService.findAllAlphabetically();
   }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.categoriesService.findCategoryBasedOnId(+id);
+  }
 }

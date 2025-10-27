@@ -12,12 +12,12 @@ export function Header() {
         <BigScallop
           position="top"
           colorClass="bg-white"
-          className="z-10 -translate-y-24 -translate-x-5 h-16"
+          className="z-10 -translate-y-28 -translate-x-5 h-16"
         />
         <BigScallop
           position="top"
           colorClass="bg-soft-pink"
-          className="z-0 -translate-y-12 -translate-x-28 "
+          className="z-0 -translate-y-16 -translate-x-28 "
         />
 
         {/* Nav nằm trong header để dính kèm với ScallopBorder */}

@@ -26,12 +26,39 @@ export class QuizzesService {
         User: true, // Lấy thông tin User (người tạo quiz)
       },
     });
+    // 2. Gọi helpter để biến đổi dữ liệu
+    return this._transformQuizzesForFrontend(quizzesFromDb);
+  }
 
-    // 2. Biến đổi (Transform) dữ liệu từ CSDL thành định dạng frontend cần
+  // Logic để lấy danh sách các quiz dựa trên danh mục
+  async findByCategoryId(categoryId: number) {
+    // 1. Query CSDL dùng TypeORM Repository
+    const quizzesFromDb = await this.quizzesRepository.find({
+      where: {
+        Quiz_Categories: {
+          category: {
+            category_id: categoryId,
+          },
+        },
+      },
+      order: {
+        created_at: 'DESC',
+      },
+      relations: {
+        Quiz_Categories: {
+          category: true,
+        },
+        User: true,
+      },
+    });
+    return this._transformQuizzesForFrontend(quizzesFromDb);
+  }
+
+  private _transformQuizzesForFrontend(quizzesFromDb: Quiz[]) {
+    // Biến đổi (Transform) dữ liệu từ CSDL thành định dạng frontend cần
     const quizzesForFrontend = quizzesFromDb.map((quiz) => {
       // Biến đổi mảng lồng nhau thành mảng string đơn giản
       const tags = quiz.Quiz_Categories.map((qc) => qc.category.name);
-
       const creatorName = quiz.User ? quiz.User.username : 'Unknown User';
 
       return {
@@ -46,7 +73,7 @@ export class QuizzesService {
       };
     });
 
-    // 3. Trả về cho Controller
+    // Trả về dữ liệu đã biến đổi
     return quizzesForFrontend;
   }
 }

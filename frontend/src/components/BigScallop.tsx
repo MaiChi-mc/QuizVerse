@@ -28,7 +28,7 @@ const BigScallop: React.FC<BigScallopProps> = ({
           key={i}
           // Áp dụng màu sắc từ prop `colorClass`
           // Thêm pointer-events-none để các phần trang bên dưới không bị chặn
-          className={`w-52 h-48 flex-shrink-0 shadow-md ${scallopShapeClass} ${colorClass} pointer-events-none`}
+          className={`w-40 h-48 flex-shrink-0 shadow-md ${scallopShapeClass} ${colorClass} pointer-events-none`}
         />
       ))}
     </div>

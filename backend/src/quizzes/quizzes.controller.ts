@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { QuizzesService } from './quizzes.service';
 import { CreateQuizDto } from './dto/create-quiz.dto';
@@ -18,5 +19,10 @@ export class QuizzesController {
   @Get('latest')
   findLatest() {
     return this.quizzesService.findLatest();
+  }
+
+  @Get('category/:categoryId')
+  findByCategoryId(@Param('categoryId', ParseIntPipe) categoryId: number) {
+    return this.quizzesService.findByCategoryId(categoryId);
   }
 }

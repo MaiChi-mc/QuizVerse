@@ -29,7 +29,7 @@ export function QuizCard({
       // Thẻ cha: nền tối, bo góc, có viền, ẩn phần thừa
       className="block bg-soft-pink rounded-2xl overflow-hidden no-underline text-dark-navy border-2
        border-soft-pink shadow-xl transition-transform duration-200 
-       hover:bg-brand-white hover:text-hot-pink hover:border-hot-pink hover:scale-105"
+       hover:bg-white hover:text-hot-pink hover:border-hot-pink hover:scale-105"
     >
       {/* Phần hình ảnh: tỷ lệ 16:9 */}
       <div className="relative w-full pt-[56.25%]">
